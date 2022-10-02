@@ -1,5 +1,21 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { useContext } from "react";
+import {
+  RiAccountCircleFill,
+  RiArrowDownSLine,
+  RiLogoutBoxRLine,
+} from "react-icons/ri";
 import { AuthContext } from "../../context/AuthContext";
 
 interface ProfileProps {
@@ -7,7 +23,7 @@ interface ProfileProps {
 }
 
 export function Profile({ showProfileData }: ProfileProps) {
-  const { user } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
 
   return (
     <Flex align="center">
@@ -20,7 +36,37 @@ export function Profile({ showProfileData }: ProfileProps) {
         </Box>
       )}
 
-      <Avatar size="md" name={user.name} src={user.pictureUrl} />
+      <Menu>
+        <MenuButton>
+          <Box style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <Avatar size="md" name={user.name} src={user.pictureUrl} />
+            <RiArrowDownSLine fontSize="24" />
+          </Box>
+        </MenuButton>
+
+        <MenuList bgColor="pink.900">
+          <MenuGroup title="Profile">
+            <MenuItem
+              icon={<RiAccountCircleFill />}
+              _focus={{
+                backgroundColor: "pink.700",
+              }}
+            >
+              {user.name}
+            </MenuItem>
+          </MenuGroup>
+          <MenuDivider />
+          <MenuItem
+            onClick={signOut}
+            icon={<RiLogoutBoxRLine />}
+            _focus={{
+              backgroundColor: "pink.700",
+            }}
+          >
+            Logout
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </Flex>
   );
 }
