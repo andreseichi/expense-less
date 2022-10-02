@@ -1,5 +1,13 @@
-import { Button, Flex, Link, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Link as ChakraLink,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Input } from "../components/Form/Input";
@@ -19,6 +27,8 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function SignIn() {
+  const router = useRouter();
+
   const { register, handleSubmit, formState } = useForm<SignInFormData>({
     resolver: yupResolver(signInFormSchema),
   });
@@ -27,9 +37,13 @@ export default function SignIn() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     const response = await api.post("/signin", values);
 
-    const { token } = response.data;
+    if (response.status === 200) {
+      const { token } = response.data;
 
-    window.localStorage.setItem("@Expenseless:token", token);
+      window.localStorage.setItem("@Expenseless:token", token);
+
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -79,8 +93,10 @@ export default function SignIn() {
 
         <Text fontSize="sm" mt="4" textAlign="center">
           Don&apos;t have an account?{" "}
-          <Link fontWeight="bold" display="inline-block">
-            Register Now
+          <Link href="/signup">
+            <ChakraLink fontWeight="bold" display="inline-block">
+              Register Now
+            </ChakraLink>
           </Link>
         </Text>
       </Flex>
