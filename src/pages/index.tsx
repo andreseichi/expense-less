@@ -62,7 +62,7 @@ export default function SignIn() {
             {...register("password")}
             type="password"
             name="password"
-            label="Senha"
+            label="Password"
             error={errors.password}
           />
         </Stack>
@@ -74,7 +74,7 @@ export default function SignIn() {
           size="lg"
           isLoading={formState.isSubmitting}
         >
-          Entrar
+          Login
         </Button>
 
         <Text fontSize="sm" mt="4" textAlign="center">
