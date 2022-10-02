@@ -1,5 +1,12 @@
-import { Button, Flex, Link, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Link as ChakraLink,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -119,8 +126,10 @@ export default function SignUp() {
 
         <Text fontSize="sm" mt="4" textAlign="center">
           Already have an account?{" "}
-          <Link fontWeight="bold" display="inline-block">
-            Sign in
+          <Link href="/">
+            <ChakraLink fontWeight="bold" display="inline-block">
+              Sign in
+            </ChakraLink>
           </Link>
         </Text>
       </Flex>
