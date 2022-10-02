@@ -7,11 +7,11 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Input } from "../components/Form/Input";
-import { api } from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 
 type SignInFormData = {
   email: string;
@@ -27,7 +27,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function SignIn() {
-  const router = useRouter();
+  const { signIn } = useContext(AuthContext);
 
   const { register, handleSubmit, formState } = useForm<SignInFormData>({
     resolver: yupResolver(signInFormSchema),
@@ -35,15 +35,7 @@ export default function SignIn() {
   const errors = formState.errors;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    const response = await api.post("/signin", values);
-
-    if (response.status === 200) {
-      const { token } = response.data;
-
-      window.localStorage.setItem("@Expenseless:token", token);
-
-      router.push("/dashboard");
-    }
+    signIn(values);
   };
 
   return (
