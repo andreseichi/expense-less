@@ -6,7 +6,7 @@ import {
 import { signOut } from "../../context/AuthContext";
 import { api } from "../api";
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
 };
