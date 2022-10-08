@@ -19,7 +19,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRef } from "react";
+import { FormEvent, useCallback, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   RiAddFill,
@@ -37,11 +37,12 @@ import { Sidebar } from "../components/Sidebar";
 import { Transactions } from "../components/Transactions";
 import { useCategories } from "../services/hooks/useCategories";
 import { useTransactions } from "../services/hooks/useTransactions";
+import { currency } from "../utils/mask";
 
 type newTransactionFormData = {
   name: string;
   description: string;
-  amount: number;
+  amount: string;
   type: boolean;
   categoryId: number;
 };
@@ -70,11 +71,23 @@ export default function Dashboard() {
   );
   const errors = formState.errors;
 
+  const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
+    currency(e);
+  }, []);
+
   const handleNewTransaction: SubmitHandler<newTransactionFormData> = (
     values
   ) => {
-    // signIn(values);
-    console.log("values", values);
+    let amountNumber = Number(values.amount.replace(",", "").replace(".", ""));
+
+    if (amountNumber < 100) {
+      amountNumber = amountNumber * 100;
+    }
+
+    const data = {
+      ...values,
+      amount: amountNumber,
+    };
   };
 
   return (
@@ -173,8 +186,9 @@ export default function Dashboard() {
                   {...register("amount")}
                   name="amount"
                   label="Value $"
-                  type="text"
+                  type="string"
                   error={errors.amount}
+                  onKeyUp={handleKeyUp}
                 />
 
                 <Switch
