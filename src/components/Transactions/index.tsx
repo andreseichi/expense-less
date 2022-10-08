@@ -16,22 +16,23 @@ export function Transactions() {
             justify="space-between"
             w="100%"
             align="center"
+            _hover={{ cursor: "pointer" }}
           >
             <Flex align="center">
               <Icon
                 as={categoryIcon[transaction.Category.name]}
                 fontSize="35"
               />
-              <Box ml="8">
-                <Tooltip label={transaction.description} aria-label="tooltip">
+              <Tooltip label={transaction.description} aria-label="tooltip">
+                <Box ml="8">
                   <Text fontSize="xl" fontWeight="bold">
                     {transaction.name}
                   </Text>
-                </Tooltip>
-                <Text fontSize="sm" mt="1">
-                  {String(transaction.date)}
-                </Text>
-              </Box>
+                  <Text fontSize="sm" mt="1">
+                    {String(transaction.date)}
+                  </Text>
+                </Box>
+              </Tooltip>
             </Flex>
 
             <Text
