@@ -1,5 +1,14 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Flex,
+  Icon,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
+import {
+  RiAddFill,
   RiMoneyDollarCircleLine,
   RiShoppingCartLine,
   RiWallet3Line,
@@ -20,12 +29,36 @@ export default function Dashboard() {
 
       <Flex w="100%" my="6" maxWidth="1480" mx="auto" px="6">
         <Sidebar />
+
         <Flex flexDirection="column" w="100%">
+          <Breadcrumb fontWeight="medium" fontSize="md" w="100%">
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#">Pages</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+
+          <Flex justify="space-between" align="center" mt="2">
+            <Text fontSize="4xl" fontWeight="bold">
+              Transactions
+            </Text>
+
+            <Icon
+              as={RiAddFill}
+              fontSize="4xl"
+              ml="2"
+              bg="pink.500"
+              rounded="full"
+            />
+          </Flex>
+
           <SimpleGrid
             w="100%"
             columns={{ sm: 1, md: 2, xl: 3 }}
             spacing="24px"
-            my="6"
+            my="5"
           >
             <MiniStatistics
               label="Total Expense"
