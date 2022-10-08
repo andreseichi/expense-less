@@ -26,6 +26,9 @@ export type TransactionFiltered = Omit<Transaction, "amount"> & {
 
 export type getTransactionsResponse = {
   transactions: TransactionFiltered[];
+  totalExpenses: string;
+  totalIncomes: string;
+  net: string;
 };
 
 export async function getTransactions(): Promise<getTransactionsResponse | void> {
@@ -53,11 +56,42 @@ export async function getTransactions(): Promise<getTransactionsResponse | void>
         amount: new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(transaction.amount),
+        }).format(transaction.amount / 100),
       };
     });
 
-    return { transactions };
+    const totalExpensesAmount = data.reduce((acc, transaction) => {
+      if (transaction.type === "expense") {
+        return acc + transaction.amount;
+      }
+      return acc;
+    }, 0);
+
+    const totalExpenses = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(totalExpensesAmount / 100);
+
+    const totalIncomesAmount = data.reduce((acc, transaction) => {
+      if (transaction.type === "income") {
+        return acc + transaction.amount;
+      }
+      return acc;
+    }, 0);
+
+    const totalIncomes = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(totalIncomesAmount / 100);
+
+    const netAmount = totalIncomesAmount - totalExpensesAmount;
+
+    const net = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(netAmount / 100);
+
+    return { transactions, totalExpenses, totalIncomes, net };
   } catch (error: any) {
     if (error.response.status === 401) {
       window.localStorage.removeItem("@Expenseless:token");
