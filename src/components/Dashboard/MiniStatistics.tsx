@@ -5,20 +5,23 @@ import {
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
+import { animationGridItem, MotionFlex } from "../../styles/animations";
 
 interface MiniStatisticsProps {
   label: string;
   amount: string | undefined;
   icon: React.ReactNode;
+  animationDelay: number;
 }
 
 const MiniStatistics = ({
   label,
   amount = "$0",
   icon,
+  animationDelay,
 }: MiniStatisticsProps) => {
   return (
-    <Flex
+    <MotionFlex
       flexDirection="row"
       align="center"
       justify="center"
@@ -26,6 +29,8 @@ const MiniStatistics = ({
       bg="gray.50"
       borderRadius="md"
       p={4}
+      variants={animationGridItem}
+      custom={animationDelay}
     >
       <Stat me="auto">
         <StatLabel fontSize="sm" color="black" fontWeight="bold" pb=".1rem">
@@ -59,7 +64,7 @@ const MiniStatistics = ({
       >
         {icon}
       </Flex>
-    </Flex>
+    </MotionFlex>
   );
 };
 

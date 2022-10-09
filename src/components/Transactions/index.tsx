@@ -1,6 +1,7 @@
 import { Box, Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 
 import { useTransactions } from "../../services/hooks/useTransactions";
+import { animationGridItem, MotionFlex } from "../../styles/animations";
 
 import { categoryIcon } from "../../utils/categoryIcon";
 
@@ -10,13 +11,17 @@ export function Transactions() {
   return (
     <Box w="100%">
       <Flex gap="4" direction="column" w="100%" mx="auto" align="center">
-        {data?.transactions.map((transaction) => (
-          <Flex
+        {data?.transactions.map((transaction, index) => (
+          <MotionFlex
             key={transaction.id}
             justify="space-between"
             w="100%"
             align="center"
             _hover={{ cursor: "pointer" }}
+            variants={animationGridItem}
+            initial="hidden"
+            animate="visible"
+            custom={index - 0.5}
           >
             <Flex align="center">
               <Icon
@@ -42,7 +47,7 @@ export function Transactions() {
             >
               {transaction.amount}
             </Text>
-          </Flex>
+          </MotionFlex>
         ))}
       </Flex>
     </Box>
