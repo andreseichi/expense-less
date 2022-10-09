@@ -30,6 +30,8 @@ export type getTransactionsResponse = {
   totalExpenses: string;
   totalIncomes: string;
   net: string;
+  monthlyTransactions: TransactionFiltered[];
+  totalTransactionsMonthly: string;
 };
 
 export type createTransactionData = {
@@ -113,7 +115,45 @@ export async function getTransactions(): Promise<getTransactionsResponse | void>
       currency: "USD",
     }).format(netAmount / 100);
 
-    return { transactions, totalExpenses, totalIncomes, net };
+    const totalTransactionsMonthlyAmount = data.reduce((acc, transaction) => {
+      const transactionDate = new Date(transaction.date);
+      const currentDate = new Date();
+
+      if (
+        transactionDate.getMonth() === currentDate.getMonth() &&
+        transactionDate.getFullYear() === currentDate.getFullYear()
+      ) {
+        if (transaction.type === "income") {
+          return acc + transaction.amount;
+        }
+        return acc - transaction.amount;
+      }
+      return acc;
+    }, 0);
+
+    const totalTransactionsMonthly = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(totalTransactionsMonthlyAmount / 100);
+
+    const monthlyTransactions = transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.createdAt);
+      const currentDate = new Date();
+
+      return (
+        transactionDate.getMonth() === currentDate.getMonth() &&
+        transactionDate.getFullYear() === currentDate.getFullYear()
+      );
+    });
+
+    return {
+      transactions,
+      totalExpenses,
+      totalIncomes,
+      net,
+      monthlyTransactions,
+      totalTransactionsMonthly,
+    };
   } catch (error: any) {
     if (error.response.status === 401) {
       window.localStorage.removeItem("@Expenseless:token");
