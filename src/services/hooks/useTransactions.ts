@@ -151,5 +151,6 @@ export async function createTransaction(
 export function useTransactions(options?: UseQueryOptions) {
   return useQuery(["transactions"], () => getTransactions(), {
     staleTime: 1000 * 60 * 60, // 1 hour
+    refetchOnWindowFocus: false,
   }) as UseQueryResult<getTransactionsResponse, unknown>;
 }

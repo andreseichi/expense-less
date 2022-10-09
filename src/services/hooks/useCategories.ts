@@ -41,5 +41,6 @@ export async function getCategories(): Promise<
 export function useCategories(options?: UseQueryOptions) {
   return useQuery(["categories"], () => getCategories(), {
     staleTime: 1000 * 60 * 60, // 1 hour
+    refetchOnWindowFocus: false,
   }) as UseQueryResult<getCategoriesResponse, unknown>;
 }
