@@ -3,7 +3,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { signOut } from "../../context/AuthContext";
 import { api } from "../api";
 import { Category } from "./useCategories";
@@ -144,7 +144,7 @@ export async function createTransaction(
       signOut();
     }
 
-    console.log(error);
+    return error.response;
   }
 }
 
