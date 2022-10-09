@@ -3,6 +3,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 import { signOut } from "../../context/AuthContext";
 import { api } from "../api";
 import { Category } from "./useCategories";
@@ -29,6 +30,27 @@ export type getTransactionsResponse = {
   totalExpenses: string;
   totalIncomes: string;
   net: string;
+};
+
+export type createTransactionData = {
+  name: string;
+  description: string;
+  amount: number;
+  type: string;
+  categoryId: number;
+};
+
+export type createTransactionResponse = {
+  id: number;
+  date: string;
+  type: string;
+  amount: number;
+  description: string;
+  name: string;
+  categoryId: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export async function getTransactions(): Promise<getTransactionsResponse | void> {
@@ -98,6 +120,31 @@ export async function getTransactions(): Promise<getTransactionsResponse | void>
 
       signOut();
     }
+  }
+}
+
+export async function createTransaction(
+  data: createTransactionData
+): Promise<AxiosResponse | void> {
+  const token = window.localStorage.getItem("@Expenseless:token");
+  const config = {
+    headers: {
+      Authorization: `Bearer "${token}"`,
+    },
+  };
+
+  try {
+    const response = await api.post("transaction", data, config);
+
+    return response;
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.localStorage.removeItem("@Expenseless:token");
+
+      signOut();
+    }
+
+    console.log(error);
   }
 }
 
