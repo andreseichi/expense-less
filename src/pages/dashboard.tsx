@@ -12,12 +12,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  SimpleGrid,
-  Stack,
+  Select, Stack,
   Text,
   useDisclosure,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -27,7 +25,7 @@ import {
   RiAddFill,
   RiMoneyDollarCircleLine,
   RiShoppingCartLine,
-  RiWallet3Line,
+  RiWallet3Line
 } from "react-icons/ri";
 import * as yup from "yup";
 
@@ -40,9 +38,10 @@ import { Transactions } from "../components/Transactions";
 import { useCategories } from "../services/hooks/useCategories";
 import {
   createTransaction,
-  useTransactions,
+  useTransactions
 } from "../services/hooks/useTransactions";
 import { queryClient } from "../services/queryClient";
+import { MotionGrid } from "../styles/animations";
 import { currency } from "../utils/mask";
 
 type newTransactionFormData = {
@@ -159,28 +158,33 @@ export default function Dashboard() {
             />
           </Flex>
 
-          <SimpleGrid
+          <MotionGrid
             w="100%"
             columns={{ sm: 1, md: 2, xl: 3 }}
             spacing="24px"
             my="5"
+            initial="hidden"
+            animate="visible"
           >
             <MiniStatistics
               label="Total Expense"
               amount={data?.totalExpenses}
               icon={<RiShoppingCartLine />}
+              animationDelay={1}
             />
             <MiniStatistics
               label="Total Income"
               amount={data?.totalIncomes}
               icon={<RiMoneyDollarCircleLine />}
+              animationDelay={2}
             />
             <MiniStatistics
               label="Net"
               amount={data?.net}
               icon={<RiWallet3Line />}
+              animationDelay={3}
             />
-          </SimpleGrid>
+          </MotionGrid>
 
           <Transactions />
         </Flex>
