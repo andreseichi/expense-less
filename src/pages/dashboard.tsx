@@ -144,6 +144,10 @@ export default function Dashboard() {
               bg="pink.500"
               rounded="full"
               onClick={onOpen}
+              _hover={{
+                cursor: "pointer",
+                bg: "pink.600",
+              }}
             />
           </Flex>
 
