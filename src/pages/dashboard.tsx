@@ -4,6 +4,7 @@ import {
   BreadcrumbLink,
   Button,
   Flex,
+  GridItem,
   Icon,
   Modal,
   ModalBody,
@@ -12,10 +13,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select, Stack,
+  Select,
+  SimpleGrid,
+  Stack,
   Text,
   useDisclosure,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -25,11 +28,12 @@ import {
   RiAddFill,
   RiMoneyDollarCircleLine,
   RiShoppingCartLine,
-  RiWallet3Line
+  RiWallet3Line,
 } from "react-icons/ri";
 import * as yup from "yup";
 
 import MiniStatistics from "../components/Dashboard/MiniStatistics";
+import { TransactionsOverview } from "../components/Dashboard/TransactionsOverview";
 import { Input } from "../components/Form/Input";
 import { Switch } from "../components/Form/Switch";
 import { Header } from "../components/Header";
@@ -38,7 +42,7 @@ import { Transactions } from "../components/Transactions";
 import { useCategories } from "../services/hooks/useCategories";
 import {
   createTransaction,
-  useTransactions
+  useTransactions,
 } from "../services/hooks/useTransactions";
 import { queryClient } from "../services/queryClient";
 import { MotionGrid } from "../styles/animations";
@@ -185,8 +189,14 @@ export default function Dashboard() {
               animationDelay={3}
             />
           </MotionGrid>
-
-          <Transactions />
+          <SimpleGrid w="100%" columns={{ sm: 1, md: 4 }} spacing="24px" my="5">
+            <GridItem colSpan={3}>
+              <Transactions />
+            </GridItem>
+            <GridItem colSpan={1}>
+              <TransactionsOverview title="Monthly Overview" key={2} />
+            </GridItem>
+          </SimpleGrid>
         </Flex>
       </Flex>
 
