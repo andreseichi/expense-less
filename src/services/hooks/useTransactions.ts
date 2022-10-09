@@ -3,7 +3,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { signOut } from "../../context/AuthContext";
 import { api } from "../api";
 import { Category } from "./useCategories";
@@ -188,6 +188,30 @@ export async function createTransaction(
   }
 }
 
+export async function deleteTransaction(
+  id: number
+): Promise<AxiosResponse | void> {
+  const token = window.localStorage.getItem("@Expenseless:token");
+  const config = {
+    headers: {
+      Authorization: `Bearer "${token}"`,
+    },
+  };
+
+  try {
+    const response = await api.delete(`transaction/${id}`, config);
+
+    return response;
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.localStorage.removeItem("@Expenseless:token");
+
+      signOut();
+    }
+
+    return error.response;
+  }
+}
 export function useTransactions(options?: UseQueryOptions) {
   return useQuery(["transactions"], () => getTransactions(), {
     staleTime: 1000 * 60 * 60, // 1 hour
