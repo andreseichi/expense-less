@@ -36,14 +36,17 @@ import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { Transactions } from "../components/Transactions";
 import { useCategories } from "../services/hooks/useCategories";
-import { useTransactions } from "../services/hooks/useTransactions";
+import {
+  createTransaction,
+  useTransactions,
+} from "../services/hooks/useTransactions";
 import { currency } from "../utils/mask";
 
 type newTransactionFormData = {
   name: string;
   description: string;
   amount: string;
-  type: boolean;
+  type: string;
   categoryId: number;
 };
 
@@ -75,19 +78,20 @@ export default function Dashboard() {
     currency(e);
   }, []);
 
-  const handleNewTransaction: SubmitHandler<newTransactionFormData> = (
+  const handleNewTransaction: SubmitHandler<newTransactionFormData> = async (
     values
   ) => {
     let amountNumber = Number(values.amount.replace(",", "").replace(".", ""));
-
-    if (amountNumber < 100) {
-      amountNumber = amountNumber * 100;
-    }
+    amountNumber = amountNumber < 100 ? amountNumber * 100 : amountNumber;
+    let type = values.type === "true" ? "expense" : "income";
 
     const data = {
       ...values,
       amount: amountNumber,
+      type,
     };
+
+    await createTransaction(data);
   };
 
   return (
