@@ -20,6 +20,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import { FormEvent, useCallback, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -41,6 +42,7 @@ import {
   createTransaction,
   useTransactions,
 } from "../services/hooks/useTransactions";
+import { queryClient } from "../services/queryClient";
 import { currency } from "../utils/mask";
 
 type newTransactionFormData = {
@@ -80,6 +82,12 @@ export default function Dashboard() {
     currency(e);
   }, []);
 
+  const createTransactionMutation = useMutation(createTransaction, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["transactions"]);
+    },
+  });
+
   const handleNewTransaction: SubmitHandler<newTransactionFormData> = async (
     values
   ) => {
@@ -93,7 +101,7 @@ export default function Dashboard() {
       type,
     };
 
-    const response = await createTransaction(data);
+    const response = await createTransactionMutation.mutateAsync(data);
 
     if (response?.status === 201) {
       toast({
