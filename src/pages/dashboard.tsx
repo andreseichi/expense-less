@@ -17,6 +17,7 @@ import {
   Stack,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormEvent, useCallback, useRef } from "react";
@@ -61,6 +62,7 @@ const newTransactionFormSchema = yup.object().shape({
 export default function Dashboard() {
   const { data } = useTransactions();
   const { data: categories } = useCategories();
+  const toast = useToast();
 
   const initialRefModal = useRef(null);
   const finalRefModal = useRef(null);
@@ -91,7 +93,26 @@ export default function Dashboard() {
       type,
     };
 
-    await createTransaction(data);
+    const response = await createTransaction(data);
+
+    if (response?.status === 201) {
+      toast({
+        title: `Transaction ${data.name} created`,
+        description: "Your transaction has been created",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+    } else {
+      toast({
+        title: `Error ${response?.status}`,
+        description: `${response?.data.map((error: string) => error)}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
