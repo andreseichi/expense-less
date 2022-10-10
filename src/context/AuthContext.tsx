@@ -87,7 +87,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.status === 200) {
         const { token } = response.data;
 
-        localStorage.setItem("@Expenseless:token", token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("@Expenseless:token", token);
+        }
 
         const user = jwtPayload(token);
         setUser(user);
