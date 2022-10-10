@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import Router from "next/router";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../services/api";
@@ -10,7 +11,7 @@ type SignInCredentials = {
 };
 
 type AuthContextData = {
-  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signIn: (credentials: SignInCredentials) => Promise<void> | any;
   signOut: () => void;
   isAuthenticated: boolean;
   user: User;
@@ -48,6 +49,8 @@ export function signOut() {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User);
   const isAuthenticated = !!user;
+
+  const toast = useToast();
 
   useEffect(() => {
     const token = window.localStorage.getItem("@Expenseless:token");
@@ -91,8 +94,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         Router.push("/dashboard");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        toast({
+          title: "Authentication error.",
+          description: "Incorrect email or password.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        if (error.response.status === 422) {
+          toast({
+            title: "Authentication failed.",
+            description: "Please check your credentials and try again.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
+      }
     }
   }
 
