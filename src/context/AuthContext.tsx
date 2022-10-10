@@ -87,10 +87,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.status === 200) {
         const { token } = response.data;
 
-        localStorage.setItem("@Expenseless:token", token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("@Expenseless:token", token);
+        }
+        console.log("token", token);
 
-        const user = jwtPayload(token);
-        setUser(user);
+        const userPayload = jwtPayload(token);
+        setUser(userPayload);
+        console.log(userPayload);
 
         Router.push("/dashboard");
       }

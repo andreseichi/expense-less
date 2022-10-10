@@ -18,6 +18,8 @@ type getCategoriesResponse = {
 export async function getCategories(): Promise<
   getCategoriesResponse | unknown
 > {
+  if (typeof window === "undefined") return;
+
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
