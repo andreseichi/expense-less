@@ -35,7 +35,7 @@ export default function SignIn() {
   const errors = formState.errors;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    signIn(values);
+    await signIn(values);
   };
 
   return (
