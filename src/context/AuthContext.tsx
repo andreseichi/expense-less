@@ -92,9 +92,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
         console.log("token", token);
 
-        const user = jwtPayload(token);
-        setUser(user);
-        console.log(user);
+        const userPayload = jwtPayload(token);
+        setUser(userPayload);
+        console.log(userPayload);
 
         Router.push("/dashboard");
       }
