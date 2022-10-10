@@ -4,6 +4,7 @@ import {
   Link as ChakraLink,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
@@ -38,6 +39,7 @@ const signUpFormSchema = yup.object().shape({
 
 export default function SignUp() {
   const router = useRouter();
+  const toast = useToast();
 
   const { register, handleSubmit, formState } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpFormSchema),
@@ -45,12 +47,40 @@ export default function SignUp() {
   const errors = formState.errors;
 
   const handleSignUp: SubmitHandler<SignUpFormData> = async (values) => {
-    const response = await api.post("/signup", values);
+    try {
+      const response = await api.post("/signup", values);
 
-    if (response.status === 201) {
-      console.log("User created!");
+      if (response.status === 201) {
+        toast({
+          title: "Account created.",
+          description: "You can now sign in to your account.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
 
-      router.push("/");
+        router.push("/");
+      }
+    } catch (error: any) {
+      if (error.response.status === 422) {
+        toast({
+          title: "Error creating account.",
+          description: `${error.response.data.map((error: any) => error)}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        if (error.response.status === 409) {
+          toast({
+            title: "Error creating account.",
+            description: `${error.response.data.message}`,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
+      }
     }
   };
 
