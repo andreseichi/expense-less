@@ -90,11 +90,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (typeof window !== "undefined") {
           localStorage.setItem("@Expenseless:token", token);
         }
-        console.log("token", token);
 
         const userPayload = jwtPayload(token);
         setUser(userPayload);
-        console.log(userPayload);
 
         Router.push("/dashboard");
       }
