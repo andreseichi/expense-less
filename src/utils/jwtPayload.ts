@@ -16,11 +16,7 @@ type jwtPayload = {
 
 export function jwtPayload(token: string): User {
   try {
-    console.log(String(process.env.JWT_SECRET));
-    const { user } = jwt.verify(
-      token,
-      String(process.env.JWT_SECRET)
-    ) as jwtPayload;
+    const { user } = jwt.decode(token) as jwtPayload;
 
     return user;
   } catch (error: any) {
