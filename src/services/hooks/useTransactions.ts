@@ -56,6 +56,8 @@ export type createTransactionResponse = {
 };
 
 export async function getTransactions(): Promise<getTransactionsResponse | void> {
+  if (typeof window === "undefined") return;
+
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
@@ -191,6 +193,7 @@ export async function createTransaction(
 export async function deleteTransaction(
   id: number
 ): Promise<AxiosResponse | void> {
+  if (typeof window === "undefined") return;
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
