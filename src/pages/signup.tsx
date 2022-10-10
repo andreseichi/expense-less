@@ -62,13 +62,25 @@ export default function SignUp() {
         router.push("/");
       }
     } catch (error: any) {
-      toast({
-        title: "Error creating account.",
-        description: `${error.response.data.message}`,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+      if (error.response.status === 422) {
+        toast({
+          title: "Error creating account.",
+          description: `${error.response.data.map((error: any) => error)}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        if (error.response.status === 409) {
+          toast({
+            title: "Error creating account.",
+            description: `${error.response.data.message}`,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
+      }
     }
   };
 
