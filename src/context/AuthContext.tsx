@@ -93,6 +93,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const user = jwtPayload(token);
         setUser(user);
+        console.log(user);
 
         Router.push("/dashboard");
       }
