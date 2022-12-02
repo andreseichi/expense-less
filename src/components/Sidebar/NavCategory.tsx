@@ -22,7 +22,7 @@ export function NavCategory({
     <Text>
       <ChakraLink display="flex" alignItems="center" {...rest}>
         <Icon as={icon} fontSize="20" />
-        <Text ml="4" fontWeight="medium">
+        <Text as="span" ml="4" fontWeight="medium">
           {children}
         </Text>
       </ChakraLink>
