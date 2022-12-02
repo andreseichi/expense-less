@@ -80,6 +80,11 @@ export default function Dashboard() {
     });
   const errors = formState.errors;
 
+  const handleCloseModal = useCallback(() => {
+    onClose();
+    reset();
+  }, [onClose, reset]);
+
   const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
     currency(e);
   }, []);
@@ -202,7 +207,7 @@ export default function Dashboard() {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleCloseModal}
         blockScrollOnMount
         initialFocusRef={initialRefModal}
         finalFocusRef={finalRefModal}
