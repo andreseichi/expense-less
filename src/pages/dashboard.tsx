@@ -74,12 +74,16 @@ export default function Dashboard() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { register, handleSubmit, formState } = useForm<newTransactionFormData>(
-    {
+  const { register, handleSubmit, formState, reset } =
+    useForm<newTransactionFormData>({
       resolver: yupResolver(newTransactionFormSchema),
-    }
-  );
+    });
   const errors = formState.errors;
+
+  const handleCloseModal = useCallback(() => {
+    onClose();
+    reset();
+  }, [onClose, reset]);
 
   const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
     currency(e);
@@ -114,6 +118,7 @@ export default function Dashboard() {
         duration: 5000,
         isClosable: true,
       });
+      reset();
       onClose();
     } else {
       toast({
@@ -202,7 +207,7 @@ export default function Dashboard() {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleCloseModal}
         blockScrollOnMount
         initialFocusRef={initialRefModal}
         finalFocusRef={finalRefModal}
