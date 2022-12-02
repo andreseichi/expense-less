@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Input } from "../components/Form/Input";
+import { Logo } from "../components/Header/Logo";
 import { AuthContext } from "../context/AuthContext";
 
 type SignInFormData = {
@@ -46,52 +47,56 @@ export default function SignIn() {
       justify="center"
       flexDirection="column"
     >
-      <Flex
-        as="form"
-        w="100%"
-        maxW={360}
-        bg="gray.800"
-        p="8"
-        borderRadius={8}
-        flexDir="column"
-        onSubmit={handleSubmit(handleSignIn)}
-      >
-        <Stack spacing="4">
-          <Input
-            {...register("email")}
-            type="email"
-            name="email"
-            label="E-mail"
-            error={errors.email}
-          />
-          <Input
-            {...register("password")}
-            type="password"
-            name="password"
-            label="Password"
-            error={errors.password}
-          />
-        </Stack>
+      <Stack spacing={6} align="center" w="100%">
+        <Logo />
 
-        <Button
-          type="submit"
-          mt="6"
-          colorScheme="pink"
-          size="lg"
-          isLoading={formState.isSubmitting}
+        <Flex
+          as="form"
+          w="100%"
+          maxW={360}
+          bg="gray.800"
+          p="8"
+          borderRadius={8}
+          flexDir="column"
+          onSubmit={handleSubmit(handleSignIn)}
         >
-          Login
-        </Button>
+          <Stack spacing="4">
+            <Input
+              {...register("email")}
+              type="email"
+              name="email"
+              label="E-mail"
+              error={errors.email}
+            />
+            <Input
+              {...register("password")}
+              type="password"
+              name="password"
+              label="Password"
+              error={errors.password}
+            />
+          </Stack>
 
-        <Text fontSize="sm" mt="4" textAlign="center">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup">
-            <ChakraLink fontWeight="bold" display="inline-block">
-              Register Now
-            </ChakraLink>
-          </Link>
-        </Text>
-      </Flex>
+          <Button
+            type="submit"
+            mt="6"
+            colorScheme="pink"
+            size="lg"
+            isLoading={formState.isSubmitting}
+          >
+            Login
+          </Button>
+
+          <Text fontSize="sm" mt="4" textAlign="center">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup">
+              <ChakraLink fontWeight="bold" display="inline-block">
+                Register Now
+              </ChakraLink>
+            </Link>
+          </Text>
+        </Flex>
+      </Stack>
     </Flex>
   );
 }
