@@ -142,7 +142,14 @@ export function Transactions() {
                       justifyContent="flex-end"
                     >
                       <Button
-                        leftIcon={<RiCheckLine />}
+                        disabled={deleteTransactionMutation.isLoading}
+                        leftIcon={
+                          deleteTransactionMutation.isLoading ? (
+                            <Spinner color="white" size="sm" />
+                          ) : (
+                            <RiCheckLine />
+                          )
+                        }
                         size="sm"
                         bg="pink.500"
                         _hover={{ background: "pink.600" }}
@@ -150,7 +157,7 @@ export function Transactions() {
                         color="white"
                         onClick={() => handleDeleteTransaction(transaction.id)}
                       >
-                        Confirm
+                        Delete
                       </Button>
                     </PopoverFooter>
                   </PopoverContent>
