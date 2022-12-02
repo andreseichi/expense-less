@@ -1,4 +1,11 @@
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spinner,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import { useTransactions } from "../../services/hooks/useTransactions";
 import { TimelineRow } from "./TimelineRow";
 
@@ -9,7 +16,7 @@ interface TransactionsOverviewProps {
 export function TransactionsOverview({ title }: TransactionsOverviewProps) {
   const textColor = useColorModeValue("white.300", "gray.300");
 
-  const { data: transactions } = useTransactions();
+  const { data: transactions, isLoading } = useTransactions();
   const transactionAmountColor =
     Number(transactions?.totalTransactionsMonthly) > 0
       ? "green.500"
@@ -24,7 +31,7 @@ export function TransactionsOverview({ title }: TransactionsOverviewProps) {
           </Text>
           <Text fontSize="sm" color="gray.400" fontWeight="normal">
             <Text fontWeight="bold" as="span" color={transactionAmountColor}>
-              {`${transactions?.totalTransactionsMonthly}`}
+              {transactions?.totalTransactionsMonthly ?? `$00.00`}
             </Text>{" "}
             this month.
           </Text>
@@ -32,8 +39,13 @@ export function TransactionsOverview({ title }: TransactionsOverviewProps) {
       </Box>
       <Box ps="20px" pe="0px" mb="31px" position="relative">
         <Flex direction="column">
-          {transactions?.monthlyTransactions.map((row, index, arr) => {
-            return (
+          {isLoading ? (
+            <VStack spacing={6} mt={10}>
+              <Spinner color="red.500" />
+              <Text textAlign="center">Loading {title}...</Text>
+            </VStack>
+          ) : (
+            transactions?.monthlyTransactions.map((row, index, arr) => (
               <TimelineRow
                 key={row.id}
                 logo={row.Category.name}
@@ -42,8 +54,8 @@ export function TransactionsOverview({ title }: TransactionsOverviewProps) {
                 index={index}
                 arrLength={arr.length}
               />
-            );
-          })}
+            ))
+          )}
         </Flex>
       </Box>
     </Box>
