@@ -28,7 +28,7 @@ const signUpFormSchema = yup.object().shape({
   pictureUrl: yup.string().url("Invalid URL"),
   password: yup
     .string()
-    .min(10, "Minimum 10 characters")
+    .min(5, "Minimum 5 characters")
     .required("Password required"),
   confirmPassword: yup
     .string()
