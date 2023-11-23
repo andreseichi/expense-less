@@ -61,7 +61,7 @@ export async function getTransactions(): Promise<getTransactionsResponse | void>
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
-      Authorization: `Bearer "${token}"`,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -166,12 +166,12 @@ export async function getTransactions(): Promise<getTransactionsResponse | void>
 }
 
 export async function createTransaction(
-  data: createTransactionData
+  data: createTransactionData,
 ): Promise<AxiosResponse | void> {
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
-      Authorization: `Bearer "${token}"`,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -191,13 +191,13 @@ export async function createTransaction(
 }
 
 export async function deleteTransaction(
-  id: number
+  id: number,
 ): Promise<AxiosResponse | void> {
   if (typeof window === "undefined") return;
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
-      Authorization: `Bearer "${token}"`,
+      Authorization: `Bearer ${token}`,
     },
   };
 

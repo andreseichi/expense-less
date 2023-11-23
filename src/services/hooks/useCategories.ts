@@ -23,7 +23,7 @@ export async function getCategories(): Promise<
   const token = window.localStorage.getItem("@Expenseless:token");
   const config = {
     headers: {
-      Authorization: `Bearer "${token}"`,
+      Authorization: `Bearer ${token}`,
     },
   };
   try {
